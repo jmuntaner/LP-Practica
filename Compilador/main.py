@@ -30,4 +30,4 @@ edge_colors = ['blue' if e in edge_labels else 'green' if e in edge_labels1 else
 nx.draw_circular(G, with_labels=True, edge_color = edge_colors, node_size=600)
 nx.draw_networkx_edge_labels(G, pos=nx.circular_layout(G), edge_labels=edge_labels, font_color='blue')
 nx.draw_networkx_edge_labels(G, pos=nx.circular_layout(G), edge_labels=edge_labels1, font_color='green')
-# plt.show()
+plt.show()

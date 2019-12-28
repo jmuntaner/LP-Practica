@@ -1,3 +1,5 @@
+import random
+import os
 import telegram
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -5,6 +7,7 @@ import pickle
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
+from telegram.ext import PicklePersistence
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
@@ -25,8 +28,51 @@ def help(bot, update):
 /report"""
     bot.send_message(chat_id=update.message.chat_id, text=help_message)
 
-# def bar(bot, update, user_data, args):
-# def pie(bot, update, user_data, args):
+def bar(bot, update, user_data, args):
+    title = user_data['title']
+    try:
+        data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
+    except (OSError, IOError) as e:
+        G = user_data['graf']
+        data = init_data(G)
+        pickle.dump(data, open('respostes' + title + '.pickle', 'wb'))
+    idP = args[0]
+    D = data[idP]
+    res = []
+    val = []
+    for e in D:
+        res.append(str(e))
+        val.append(D[e])
+    fitxer = "%d.png" % random.randint(1000000, 9999999)
+    plt.clf()
+    plt.bar(res, val)
+    plt.savefig(fitxer, bbox_inches='tight')
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(fitxer, 'rb'))
+    os.remove(fitxer)
+
+def pie(bot, update, user_data, args):
+    title = user_data['title']
+    try:
+        data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
+    except (OSError, IOError) as e:
+        G = user_data['graf']
+        data = init_data(G)
+        pickle.dump(data, open('respostes' + title + '.pickle', 'wb'))
+    idP = args[0]
+    D = data[idP]
+    res = []
+    val = []
+    for e in D:
+        res.append(str(e))
+        val.append(D[e])
+    explode = (0.1,) * len(res)
+    fitxer = "%d.png" % random.randint(1000000, 9999999)
+    plt.clf()
+    plt.pie(val, labels=res, explode = explode, shadow=True, autopct='%1.1f%%')
+    plt.savefig(fitxer, bbox_inches='tight')
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(fitxer, 'rb'))
+    os.remove(fitxer)
+
 def report(bot, update, user_data):
     title = user_data['title']
     try:
@@ -139,17 +185,19 @@ def procesar_resposta(bot, update, user_data):
                     user_data['isAlt']=True
     procesar_node(bot, update, user_data)
 
-
+persist = PicklePersistence(filename='userdata.pickle')
 TOKEN = open('token.txt').read().strip()
-updater = Updater(token=TOKEN)
+updater = Updater(token=TOKEN, persistence=persist)
 dispatcher = updater.dispatcher
+dispatcher.persistence = persist
+dispatcher.user_data = persist.get_user_data()
 
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
 dispatcher.add_handler(CommandHandler('author', author))
 dispatcher.add_handler(CommandHandler('quiz', quiz, pass_user_data=True, pass_args=True))
-# dispatcher.add_handler(CommandHandler('bar', bar, pass_user_data=True, pass_args=True))
-# dispatcher.add_handler(CommandHandler('pie', pie, pass_user_data=True, pass_args=True))
+dispatcher.add_handler(CommandHandler('bar', bar, pass_user_data=True, pass_args=True))
+dispatcher.add_handler(CommandHandler('pie', pie, pass_user_data=True, pass_args=True))
 dispatcher.add_handler(CommandHandler('report', report, pass_user_data=True))
 dispatcher.add_handler(MessageHandler(Filters.text, procesar_resposta, pass_user_data=True))
 
