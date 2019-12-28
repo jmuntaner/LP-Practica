@@ -97,8 +97,8 @@ class EnquestesVisitor(ParseTreeVisitor):
         l = [next(g)for i in range(num)]
         title = l[0].getText()
         end = l[num-1].getText()
-        self.G.add_node(title, type='enquesta')
-        self.G.add_node(end, type='enquesta')
+        self.G.add_node(title, type='enquesta_init')
+        self.G.add_node(end, type='enquesta_end')
         anterior = title
         for j in range(3,num-1):
             id = self.items[l[j].getText()]
