@@ -25,6 +25,23 @@ def help(bot, update):
 /report"""
     bot.send_message(chat_id=update.message.chat_id, text=help_message)
 
+# def bar(bot, update, user_data, args):
+# def pie(bot, update, user_data, args):
+def report(bot, update, user_data):
+    title = user_data['title']
+    try:
+        data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
+    except (OSError, IOError) as e:
+        G = user_data['graf']
+        data = init_data(G)
+        pickle.dump(data, open('respostes' + title + '.pickle', 'wb'))
+    txt = ''
+    for i in data:
+        for j in data[i]:
+            if data[i][j]>0:
+                txt += str(i) + ' ' + str(j) + ' ' + str(data[i][j]) + '\n'
+    bot.send_message(chat_id=update.message.chat_id, text=txt)
+
 def init_data(G):
     items = nx.get_edge_attributes(G,'id')
     data = {}
@@ -91,6 +108,7 @@ def quiz(bot, update, user_data, args):
     user_data['node']=idE
     user_data['isAlt']=False
     user_data['inQuiz']=True
+    user_data['title'] = G.graph['title']
     procesar_node(bot, update, user_data)
 
 def procesar_resposta(bot, update, user_data):
@@ -130,6 +148,9 @@ dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
 dispatcher.add_handler(CommandHandler('author', author))
 dispatcher.add_handler(CommandHandler('quiz', quiz, pass_user_data=True, pass_args=True))
+# dispatcher.add_handler(CommandHandler('bar', bar, pass_user_data=True, pass_args=True))
+# dispatcher.add_handler(CommandHandler('pie', pie, pass_user_data=True, pass_args=True))
+dispatcher.add_handler(CommandHandler('report', report, pass_user_data=True))
 dispatcher.add_handler(MessageHandler(Filters.text, procesar_resposta, pass_user_data=True))
 
 updater.start_polling()
