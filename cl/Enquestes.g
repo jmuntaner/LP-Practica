@@ -41,7 +41,7 @@ iid : 'I' NUM ;
 ATK : 'ALTERNATIVA' ;
 aid : 'A' NUM ;
 ETK : 'ENQUESTA' ;
-eid : STRING ;
+eid : STRING NUM?;
 ENDTK : 'END' ;
 
 frase: STRING+ ;
