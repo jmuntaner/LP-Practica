@@ -20,14 +20,17 @@ visitor = EnquestesVisitor()
 visitor.visit(tree)
 
 G = visitor.getGraph().copy()
-name = 'graf' + G.graph['title']
+title = G.graph['title']
+nodes = nx.descendants(G, title)
+nodes.add(title)
+H = G.subgraph(nodes).copy()
+name = 'graf' + title
 extension = '.gpickle'
-nx.write_gpickle(G,name + extension)
-# G=nx.read_gpickle("grafE.pickle")
-edge_labels = nx.get_edge_attributes(G,'id')
-edge_labels1 = nx.get_edge_attributes(G,'resposta')
-edge_colors = ['blue' if e in edge_labels else 'green' if e in edge_labels1 else 'black' for e in G.edges]
-nx.draw_circular(G, with_labels=True, edge_color = edge_colors, node_size=600)
-nx.draw_networkx_edge_labels(G, pos=nx.circular_layout(G), edge_labels=edge_labels, font_color='blue')
-nx.draw_networkx_edge_labels(G, pos=nx.circular_layout(G), edge_labels=edge_labels1, font_color='green')
+nx.write_gpickle(H, name + extension)
+edge_labels = nx.get_edge_attributes(H, 'id')
+edge_labels1 = nx.get_edge_attributes(H, 'resposta')
+edge_colors = ['blue' if e in edge_labels else 'green' if e in edge_labels1 else 'black' for e in H.edges]
+nx.draw_circular(H, with_labels=True, edge_color=edge_colors, node_size=600)
+nx.draw_networkx_edge_labels(H, pos=nx.circular_layout(H), edge_labels=edge_labels, font_color='blue')
+nx.draw_networkx_edge_labels(H, pos=nx.circular_layout(H), edge_labels=edge_labels1, font_color='green')
 plt.show()
