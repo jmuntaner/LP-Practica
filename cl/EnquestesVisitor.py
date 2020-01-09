@@ -63,7 +63,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         aid = L[0].getText()
         iid = L[3].getText()
         pid = self.items[iid]
-        for j in range(5, num-1, 2):
+        for j in range(5, num - 1, 2):
             rnum, item = self.visit(L[j])
             p2id = self.items[item]
             self.G.add_edge(pid, p2id, resposta=rnum, type='alternativa')
@@ -90,11 +90,11 @@ class EnquestesVisitor(ParseTreeVisitor):
         g = ctx.getChildren()
         L = [next(g)for i in range(num)]
         title = L[0].getText()
-        end = L[num-1].getText()
+        end = L[num - 1].getText()
         self.G.add_node(title, type='enquesta_init')
         self.G.add_node(end, type='enquesta_end')
         anterior = title
-        for j in range(3, num-1):
+        for j in range(3, num - 1):
             id = self.items[L[j].getText()]
             self.G.add_edge(anterior, id, type='enquesta')
             anterior = id

@@ -140,7 +140,7 @@ S'ha inclòs una enquesta (_EnquestaDobleAlt_) que permet provar una enquesta am
 
 ### Tests d'estil de codi
 
-Usa `pycodestyle` amb cada fitxer \*.py per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
+Usant `pycodestyle --ignore=E501` amb cada fitxer \*.py (excepte EnquestesParser.py i EnquestesLexer.py que han estat generats automàticament) per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
 
 
 ## Autor
