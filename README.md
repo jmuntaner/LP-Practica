@@ -124,15 +124,15 @@ Per provar les altres comandes, les gràfiques queden més entenedores si s'usa 
 
 A continuació provem les altres comandes, fem `/pie P3` i obtindrem quelcom com:
 
-<center><img src='./images_test/pie.jpg' width='600'></center>
+<center><img src='./images_test/pie.jpg' width='300'></center>
 
 Seguidament fent `/bar P3` obtindrem:
 
-<center><img src='./images_test/bar.jpg' width='600'></center>
+<center><img src='./images_test/bar.jpg' width='300'></center>
 
 Finalment amb `/report` hauriem d'obtenir un resultat similar a:
 
-<center><img src='./images_test/report.png' width='600'></center>
+<center><img src='./images_test/report.png' width='300'></center>
 
 ### Tests d'estil de codi
 
