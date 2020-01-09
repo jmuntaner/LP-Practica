@@ -226,14 +226,11 @@ def procesar_resposta(bot, update, user_data):
         node = user_data['alt']
         user_data['isAlt'] = False
     user_data['res'][node] = res
-    next = ''
     for e in G[node]:
         if G[node][e]['type'] == 'enquesta' and not alt:
-            next = e
             user_data['node'] = e
         elif G[node][e]['type'] == 'alternativa':
             if G[node][e]['resposta'] == res:
-                next = e
                 user_data['alt'] = e
                 user_data['isAlt'] = True
     procesar_node(bot, update, user_data)
