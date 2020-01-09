@@ -21,7 +21,7 @@ def help(bot, update):
 • /start: Engega el bot.
 • /help: Mostra aquest missatge d'ajuda.
 • /author: Mostra informació de l'autor.
-• /quiz <idEnquesta> <do\_quiz>?: Inicialitza i posa com a activa l'enquesta amb nom <idEnquesta>. En cas de que <do\_quiz> == 0, simplement canvia l'enquesta activa per <idEnquesta> però sense inicialitzar-la.
+• /quiz <idEnquesta> <doQuiz>?: Inicialitza i posa com a activa l'enquesta amb nom <idEnquesta>. En cas de que <doQuiz> == 0, simplement canvia l'enquesta activa per <idEnquesta> però sense inicialitzar-la.
 • /bar <idPregunta>: Mostra un gràfic de barres amb les respostes donades a la pregunta <idPregunta> de l'enquesta activa.
 • /pie <idPregunta>: Mostra un gràfic de formatget amb els percentatges de cada resposta donades a la pregunta <idPregunta> de l'enquesta activa.
 • /report: Mostra una pseudotaula amb el nombre de respostes obtingudes per cada valor de cada pregunta."""
@@ -210,6 +210,7 @@ def procesar_resposta(bot, update, user_data):
         return
     res = update.message.text
     pos_res = user_data['pos_res']
+    alt = user_data['isAlt']
     # Comprova que la resposta sigui vàlida
     try:
         if int(res) not in user_data['pos_res']:
@@ -221,21 +222,20 @@ def procesar_resposta(bot, update, user_data):
     # Recull la informació de user_data
     G = user_data['graf']
     node = user_data['node']
-    if user_data['isAlt']:
+    if alt:
         node = user_data['alt']
-    user_data['res'][node] = res
-    if user_data['isAlt']:
         user_data['isAlt'] = False
-    else:
-        next = ''
-        for e in G[node]:
-            if G[node][e]['type'] == 'enquesta':
+    user_data['res'][node] = res
+    next = ''
+    for e in G[node]:
+        if G[node][e]['type'] == 'enquesta' and not alt:
+            next = e
+            user_data['node'] = e
+        elif G[node][e]['type'] == 'alternativa':
+            if G[node][e]['resposta'] == res:
                 next = e
-                user_data['node'] = next
-            elif G[node][e]['type'] == 'alternativa':
-                if G[node][e]['resposta'] == res:
-                    user_data['alt'] = e
-                    user_data['isAlt'] = True
+                user_data['alt'] = e
+                user_data['isAlt'] = True
     procesar_node(bot, update, user_data)
 
 
