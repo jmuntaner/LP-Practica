@@ -47,5 +47,5 @@ ENDTK : 'END' ;
 frase: STRING+ ;
 
 NUM : [0-9]+ ;
-STRING: [a-zA-Z]+ ;
+STRING: [a-zA-Z\u0080-\u00FF]+ ;
 WS : [ \n\t\r]+ -> skip ;

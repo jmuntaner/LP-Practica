@@ -13,32 +13,42 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Hola!")
+    bot.send_message(chat_id=update.message.chat_id, text="Benvingut a EnquestaBot! Escriu /help per veure les diferents possibles comandes")
 
 
 def help(bot, update):
-    help_message = """Soc un bot amb comandes:
-
-/start
-/help
-/author
-/quiz <idEnquesta>
-/bar <idPregunta>
-/pie <idPregunta>
-/report"""
-    bot.send_message(chat_id=update.message.chat_id, text=help_message)
+    help_message = """Comandes:
+• /start: Engega el bot.
+• /help: Mostra aquest missatge d'ajuda.
+• /author: Mostra informació de l'autor.
+• /quiz <idEnquesta> <do_quiz>?: Inicialitza l'enquesta amb nom <idEnquesta>. En cas de que <do_quiz> == 0, simplement canvia l'enquesta activa per <idEnquesta> però sense inicialitzar-la.
+• /bar <idPregunta>: Mostra un gràfic de barres amb les respostes donades a la pregunta <idPregunta> de l'enquesta activa.
+• /pie <idPregunta>: Mostra un gràfic de formatget amb els percentatges de cada resposta donades a la pregunta <idPregunta> de l'enquesta activa.
+• /report: Mostra una pseudotaula amb el nombre de respostes obtingudes per cada valor de cada pregunta."""
+    bot.send_message(chat_id=update.message.chat_id, parse_mode=telegram.ParseMode.MARKDOWN, text=help_message)
 
 
 def bar(bot, update, user_data, args):
-    title = user_data['title']
+    try:
+        title = user_data['title']
+    except KeyError or IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="No hi ha cap enquesta activa")
     try:
         data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
     except (OSError, IOError) as e:
         G = user_data['graf']
         data = init_data(G)
         pickle.dump(data, open('respostes' + title + '.pickle', 'wb'))
-    idP = args[0]
-    D = data[idP]
+    try:
+        idP = args[0]
+    except IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="Falta l'argument <idPregunta>")
+        return
+    try:
+        D = data[idP]
+    except KeyError:
+        bot.send_message(chat_id=update.effective_chat.id, text="L'<idPregunta> introduït (" + idP + ") no existeix a l'enquesta actual (" + title + ")")
+        return
     res = []
     val = []
     for e in D:
@@ -53,15 +63,26 @@ def bar(bot, update, user_data, args):
 
 
 def pie(bot, update, user_data, args):
-    title = user_data['title']
+    try:
+        title = user_data['title']
+    except KeyError or IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="No hi ha cap enquesta activa")
     try:
         data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
     except (OSError, IOError) as e:
         G = user_data['graf']
         data = init_data(G)
         pickle.dump(data, open('respostes' + title + '.pickle', 'wb'))
-    idP = args[0]
-    D = data[idP]
+    try:
+        idP = args[0]
+    except IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="Falta l'argument <idPregunta>")
+        return
+    try:
+        D = data[idP]
+    except KeyError:
+        bot.send_message(chat_id=update.effective_chat.id, text="L'<idPregunta> introduït (" + idP + ") no existeix a l'enquesta actual (" + title + ")")
+        return
     res = []
     val = []
     for e in D:
@@ -77,7 +98,10 @@ def pie(bot, update, user_data, args):
 
 
 def report(bot, update, user_data):
-    title = user_data['title']
+    try:
+        title = user_data['title']
+    except KeyError or IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="No hi ha cap enquesta activa")
     try:
         data = pickle.load(open('respostes' + title + '.pickle', 'rb'))
     except (OSError, IOError) as e:
@@ -150,16 +174,31 @@ def author(bot, update):
 
 
 def quiz(bot, update, user_data, args):
-    idE = args[0]
+    try:
+        idE = args[0]
+    except IndexError:
+        bot.send_message(chat_id=update.effective_chat.id, text="Falta l'argument <idEnquesta>")
+        return
     name = "graf" + idE
     path = "../cl/" + name + ".gpickle"
-    G = nx.read_gpickle(path)
+    try:
+        G = nx.read_gpickle(path)
+    except FileNotFoundError:
+        bot.send_message(chat_id=update.effective_chat.id, text='No existeix cap enquesta amb el nom: ' + idE)
+        return
     user_data['graf'] = G.copy()
     user_data['res'] = {}
     user_data['node'] = idE
     user_data['isAlt'] = False
     user_data['inQuiz'] = True
     user_data['title'] = G.graph['title']
+    try:
+        do_quiz = args[1]
+    except IndexError:
+        do_quiz = 1
+    if do_quiz == '0':
+        bot.send_message(chat_id=update.effective_chat.id, text="L'enquesta activa s'ha canviat correctament a: " + idE)
+        return
     procesar_node(bot, update, user_data)
 
 
@@ -168,8 +207,12 @@ def procesar_resposta(bot, update, user_data):
         return
     res = update.message.text
     pos_res = user_data['pos_res']
-    if int(res) not in user_data['pos_res']:
-        bot.send_message(chat_id=update.effective_chat.id, text='Aquesta resposta no esta entre les opcions possibles. Torna a provar.')
+    try:
+        if int(res) not in user_data['pos_res']:
+            bot.send_message(chat_id=update.effective_chat.id, text='Aquesta resposta no esta entre les opcions possibles. Torna a provar.')
+            return
+    except ValueError:
+        bot.send_message(chat_id=update.effective_chat.id, text='Resposta no vàlida (han de ser números)')
         return
     G = user_data['graf']
     node = user_data['node']
@@ -209,5 +252,3 @@ dispatcher.add_handler(MessageHandler(Filters.text, procesar_resposta, pass_user
 
 updater.start_polling()
 updater.idle()
-
-# updater.stop()

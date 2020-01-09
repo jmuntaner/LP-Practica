@@ -12,7 +12,7 @@ P1 -> R1
 I2: ITEM
 P2 -> R1
 P3: PREGUNTA
-Com vas a la feina majoritariament?
+Com vas a la feina majoritàriament?
 R3: RESPOSTA
 1: caminant ;
 2: en cotxe ;
@@ -37,6 +37,6 @@ I5: ITEM
 P5 -> R5
 A1: ALTERNATIVA
 I3 [(2,I4),(3,I5)]
-Enquesta23: ENQUESTA
+Enquestà23: ENQUESTA
 I1 I2 I3
 END
