@@ -17,19 +17,23 @@ pip install -r requirements.txt
 
 Per executar el compilador simplement executa la següent comanda desde la carpeta /cl
 
-### Execució Bot
-
-Per fer córrer el bot simplement cal executar la següent comanda desde la carpeta /bot
-
 ```
 python3 test.main.py el_teu_input.txt
 ```
 
 On el_teu_input.txt és el fitxer d'entrada que conté l'enquesta que es vol interpretar.
 
+### Execució Bot
+
+Per fer córrer el bot simplement cal executar la següent comanda desde la carpeta /bot
+
+```
+python3 bot.py
+```
+
 ### Usar el Bot
 
-Obre Telegram i obre un xat amb l'usuari @EnquestaLP_bot. Envia la comanda:
+Obre Telegram i obre un xat amb l'usuari @EnquestaLP_bot [https://t.me/EnquestaLP_bot]. Envia la comanda:
 
 ```
 /start
