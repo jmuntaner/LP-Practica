@@ -116,6 +116,7 @@ def report(bot, update, user_data):
     bot.send_message(chat_id=update.message.chat_id, text=txt, parse_mode='Markdown')
 
 
+# Inicialitza el diccionari de respostes quan s'ha de guardar per primer cop.
 def init_data(G):
     items = nx.get_edge_attributes(G, 'id')
     data = {}
@@ -129,6 +130,7 @@ def init_data(G):
     return data
 
 
+# Processa un node del graf i envia les preguntes i respostes d'aquest.
 def procesar_node(bot, update, user_data):
     G = user_data['graf']
     node = user_data['node']
@@ -202,11 +204,13 @@ def quiz(bot, update, user_data, args):
     procesar_node(bot, update, user_data)
 
 
+# Processa els missatges que envia l'usuari, particularment només atén les respostes quan estem dins /quiz i apunta al següent node.
 def procesar_resposta(bot, update, user_data):
     if not user_data['inQuiz']:
         return
     res = update.message.text
     pos_res = user_data['pos_res']
+    # Comprova que la resposta sigui vàlida
     try:
         if int(res) not in user_data['pos_res']:
             bot.send_message(chat_id=update.effective_chat.id, text='Aquesta resposta no esta entre les opcions possibles. Torna a provar.')
@@ -214,6 +218,7 @@ def procesar_resposta(bot, update, user_data):
     except ValueError:
         bot.send_message(chat_id=update.effective_chat.id, text='Resposta no vàlida (han de ser números)')
         return
+    # Recull la informació de user_data
     G = user_data['graf']
     node = user_data['node']
     if user_data['isAlt']:

@@ -53,6 +53,7 @@ S'han fet una sèrie de suposicions sobre el llenguatge d'enquestes:
     * Alternatives: Consistirán de una _A_ majúscula i un _nombre_ qualsevol, per exemple: _A123_
     * Items: Consistirán de una _I_ majúscula i un _nombre_ qualsevol, per exemple: _I123_
     * Enquestes: Consistirán de una _String_ seguida de un _nombre_ qualsevol _opcional_, per exemple: _Enquesta123_, _Ahirenquestà_.
+* Les opcions de cada resposta estan identificades sempre per números.
 * Tornar a usar un identificador amb el mateix nom que un que aparescut abans el sobreescriu.
 * Els Strings poden contenir accents.
 * Només es pot fer una comanda ENQUESTA per cada execució, per tant, quan l'intèrpret la detecta, acaba.
@@ -62,18 +63,78 @@ També s'ha afegit una pregunta addicional quan s'executa amb un input que sobre
 ### Bot
 
 * Podem tenir moltes enquestes creades pel Compilador, però són totes independents entre elles.
-* Definim l'__enquesta activa__ en un moment de l'execució com l'última enquesta (<idEnquesta>) de la que s'ha fet `/quiz <idEnquesta>`.
+* Definim l'_enquesta activa_ en un moment de l'execució com l'última enquesta (<idEnquesta>) de la que s'ha fet `/quiz <idEnquesta>`.
 * S'ha incorportat una funcionalitat addicional a `/quiz` tal que si es fa `/quiz <idEnquesta> 0` (es crida un argument addicional igual a _0_), <idEnquesta> passa a ser l'_enquesta activa_.
 * Les comandes `/bar`, `/pie` i `/report` fan referència a l'_enquesta activa_ en el moment d'executar-se.
 * _user_data_ és persistent entre diverses execucions del bot (desde la mateixa màquina) per poder guardar l'estat de l'_enquesta activa_ i començar l'execució del bot podent usar totes les comandes (després de la primera execució).
+* Les respostes de cada enquesta es guarden en un diccionari de diccionaris dins _user_data_ que serialitzem cada cop que finalitzem una enquesta i per tant només si s'acaba l'execució de l'enquesta sense errors s'actualitzarán les respostes recollides.
 
-## Running the tests
+## Tests
 
-### Test run
+### Compilador run
 
-This is a sample run from the bot. First of all, run the start command
+Correu la següent comanda per interpretar amb el compilador l'exemple donat a l'enunciat (input.txt) i crear el graf pertinent que permeti al Bot començar a operar.
 
-## Tests d'estil de codi
+```
+python3 test.main.py input.txt
+```
+
+Es crearà el graf adient i es mostrarà el plot.
+
+### Bot run
+
+Ara que ja tenim una Enquesta creada farem una demo run del bot.
+
+Comencem amb
+
+```
+/quiz E
+```
+
+Això iniciarà l'enquesta _E_ i el bot anirà fent una sèrie de preguntes i recullint les respostes. Es pot comprovar que detecta errors en les respostes: si introduïm una string qualsevol o un número retornarà un missatge d'error. Es pot comprovar que l'exemple de l'enunciat funciona com cal:
+
+```
+E> Quants adults viuen a casa teva?
+0: zero
+1: un
+2: dos
+3: més de dos
+>> 2
+E> Quants menors viuen a casa teva?
+0: zero
+1: un
+2: dos
+3: més de dos
+>> 1
+E> Com vas a la feina majoritàriament?
+1: caminant
+2: en cotxe
+3: en transport públic
+>> 3
+E> Quin mitja de transport utilitzes majoritàriament?
+1: Tren
+2: Bus
+3: Metro
+4: Altres
+>> 4
+E> Gràcies pel teu temps!
+```
+
+Per provar les altres comandes, les gràfiques queden més entenedores si s'usa una enquesta que ja tengui respostes, per a això, seleccionem com a enquesta activa a EnquestaPlena fent `/quiz EnquestaPlena 0` i desde l'ordinador fem `python3 emplenarEnquesta.py` que emplenarà les respostes d'_EnquestaPlena_.
+
+A continuació provem les altres comandes, fem `/pie P3` i obtindrem quelcom com:
+
+<center><img src='./images_test/pie.jpg' width='600'></center>
+
+Seguidament fent `/bar P3` obtindrem:
+
+<center><img src='./images_test/bar.jpg' width='600'></center>
+
+Finalment amb `/report` hauriem d'obtenir un resultat similar a:
+
+<center><img src='./images_test/report.png' width='600'></center>
+
+### Tests d'estil de codi
 
 Usa `pycodestyle` amb cada fitxer \*.py per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
 
