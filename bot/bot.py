@@ -21,7 +21,7 @@ def help(bot, update):
 • /start: Engega el bot.
 • /help: Mostra aquest missatge d'ajuda.
 • /author: Mostra informació de l'autor.
-• /quiz <idEnquesta> <do_quiz>?: Inicialitza l'enquesta amb nom <idEnquesta>. En cas de que <do_quiz> == 0, simplement canvia l'enquesta activa per <idEnquesta> però sense inicialitzar-la.
+• /quiz <idEnquesta> <do\_quiz>?: Inicialitza i posa com a activa l'enquesta amb nom <idEnquesta>. En cas de que <do\_quiz> == 0, simplement canvia l'enquesta activa per <idEnquesta> però sense inicialitzar-la.
 • /bar <idPregunta>: Mostra un gràfic de barres amb les respostes donades a la pregunta <idPregunta> de l'enquesta activa.
 • /pie <idPregunta>: Mostra un gràfic de formatget amb els percentatges de cada resposta donades a la pregunta <idPregunta> de l'enquesta activa.
 • /report: Mostra una pseudotaula amb el nombre de respostes obtingudes per cada valor de cada pregunta."""
