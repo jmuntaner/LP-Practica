@@ -41,49 +41,39 @@ Obre Telegram i obre un xat amb l'usuari @EnquestaLP_bot [https://t.me/EnquestaL
 
 Si necessites ajuda envia la comanda `/help` al Bot i et mostrarà una llista de comandes disponibles.
 
+## Decisions de disseny
+
+### Compilador
+
+S'han fet una sèrie de suposicions sobre el llenguatge d'enquestes:
+
+* Els identificadors de preguntes, respostes, alternatives, ítems i enquestes no són lliures i tenen un format determinat:
+    * Preguntes: Consistirán de una _P_ majúscula i un _nombre_ qualsevol, per exemple: _P123_
+    * Respostes: Consistirán de una _R_ majúscula i un _nombre_ qualsevol, per exemple: _R123_
+    * Alternatives: Consistirán de una _A_ majúscula i un _nombre_ qualsevol, per exemple: _A123_
+    * Items: Consistirán de una _I_ majúscula i un _nombre_ qualsevol, per exemple: _I123_
+    * Enquestes: Consistirán de una _String_ seguida de un _nombre_ qualsevol _opcional_, per exemple: _Enquesta123_, _Ahirenquestà_.
+* Tornar a usar un identificador amb el mateix nom que un que aparescut abans el sobreescriu.
+* Els Strings poden contenir accents.
+* Només es pot fer una comanda ENQUESTA per cada execució, per tant, quan l'intèrpret la detecta, acaba.
+
+També s'ha afegit una pregunta addicional quan s'executa amb un input que sobreescrigui un graf d'enquesta que ja existeixi.
+
+### Bot
+
+* Podem tenir moltes enquestes creades pel Compilador, però són totes independents entre elles.
+* Definim l'_enquesta activa_ en un moment de l'execució com l'última enquesta (<idEnquesta>) de la que s'ha fet `/quiz <idEnquesta>`.
+* S'ha incorportat una funcionalitat addicional a `quiz` tal que si es fa `quiz <idEnquesta> 0`, <idEnquesta> passa a ser l'_enquesta activa_.
+* Les comandes `bar`, `pie` i `report` fan referència a l'_enquesta activa_ en el moment d'executar-se.
+* user_data és persistent entre diverses execucions del bot (desde la mateixa màquina) per poder guardar l'estat de l'_enquesta activa_ i començar l'execució del bot podent usar totes les comandes (després de la primera execució).
+
 ## Running the tests
 
 ### Test run
 
 This is a sample run from the bot. First of all, run the start command
 
-```
-/start
-```
-
-This will generate a default map with cities with population above 100000 and edges if the distance between them is less than 300 km. Now run the following commands:
-
-```
-/nodes
-/edges
-/components
-```
-
-Which gives the number of nodes, edges and components of the graph. The results should be  3527, 48086 and 163. Now, if you run
-
-```
-/graph 600 500000
-```
-
-the bot will create a new graph with cities above half a million inhabitants and edges if the distance is less than 600 km. Check that the graph now has less nodes and edges. The bot can also generate maps, for example with
-
-```
-/plotpop 1000 41.3888 2.1590
-```
-
-you'll get a map of the cities less than 1000 km away from Barcelona, with sizes proportional to population. You can now send your current location (with the paperclip icon next to the writing prompt) and re-run the command only with the first parameter, the bot will send a map with cities less than the specified distance from you.
-
-If you replace `plotpop` with `plotmap`, it will also draw edges between nearby cities. Now you can send this command:
-
-```
-/route "varselona, es", "pariss, fr"
-```
-
-The answer will be a map with the route between the two cities. Note the bot could interpret the command even though the names had typos. If you try to find a non-existent route, for example between "barcelona, es" and "tokyo, jp", the bot wil tell you it doesn't exist.
-
-If you try with another user or device, you'll notice the bot remembers which chat is in and uses the correct graph. If you want to get more information about these and other commands, send `/help` to the bot.
-
-### Tests d'estil de codi
+## Tests d'estil de codi
 
 Usa `pycodestyle` amb cada fitxer \*.py per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
 

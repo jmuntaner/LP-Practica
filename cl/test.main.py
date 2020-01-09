@@ -32,8 +32,8 @@ def main():
     filename = name + extension
     if os.path.isfile(filename):
         r = input("Ja existeix una enquesta amb aquest nom, vols sobreescriure l'arxiu? (y/n) \n")
-    if r == 'n':
-        return
+        if r == 'n':
+            return
     nx.write_gpickle(H, filename)
     edge_labels = nx.get_edge_attributes(H, 'id')
     edge_labels1 = nx.get_edge_attributes(H, 'resposta')
