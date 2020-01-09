@@ -48,11 +48,11 @@ Si necessites ajuda envia la comanda `/help` al Bot i et mostrarà una llista de
 S'han fet una sèrie de suposicions sobre el llenguatge d'enquestes:
 
 * Els identificadors de preguntes, respostes, alternatives, ítems i enquestes no són lliures i tenen un format determinat:
-    * Preguntes: Consistirán de una _P_ majúscula i un _nombre_ qualsevol, per exemple: _P123_
-    * Respostes: Consistirán de una _R_ majúscula i un _nombre_ qualsevol, per exemple: _R123_
-    * Alternatives: Consistirán de una _A_ majúscula i un _nombre_ qualsevol, per exemple: _A123_
-    * Items: Consistirán de una _I_ majúscula i un _nombre_ qualsevol, per exemple: _I123_
-    * Enquestes: Consistirán de una _String_ seguida de un _nombre_ qualsevol _opcional_, per exemple: _Enquesta123_, _Ahirenquestà_.
+    * Preguntes: Consistirán de una _P_ majúscula i un _número_ qualsevol, per exemple: _P123_
+    * Respostes: Consistirán de una _R_ majúscula i un _número_ qualsevol, per exemple: _R123_
+    * Alternatives: Consistirán de una _A_ majúscula i un _número_ qualsevol, per exemple: _A123_
+    * Items: Consistirán de una _I_ majúscula i un _número_ qualsevol, per exemple: _I123_
+    * Enquestes: Consistirán de una _String_ seguida d'un _número_ qualsevol _opcional_, per exemple: _Enquesta123_, _Ahirenquestà_.
 * Les opcions de cada resposta estan identificades sempre per números.
 * Tornar a usar un identificador amb el mateix nom que un que aparescut abans el sobreescriu.
 * Els Strings poden contenir accents.
