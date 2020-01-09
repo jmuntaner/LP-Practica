@@ -120,7 +120,7 @@ E> Quin mitja de transport utilitzes majoritàriament?
 E> Gràcies pel teu temps!
 ```
 
-Per provar les altres comandes, les gràfiques queden més entenedores si s'usa una enquesta que ja tengui respostes, per a això, seleccionem com a enquesta activa a EnquestaPlena fent `/quiz EnquestaPlena 0` i desde l'ordinador fem `python3 emplenarEnquesta.py` que emplenarà les respostes d'_EnquestaPlena_.
+Per provar les altres comandes, les gràfiques queden més entenedores si s'usa una enquesta que ja tengui respostes, per a això, seleccionem com a enquesta activa a _EnquestaPlena_ fent `/quiz EnquestaPlena 0` i desde l'ordinador fem `python3 emplenarEnquesta.py` que emplenarà les respostes d'_EnquestaPlena_.
 
 A continuació provem les altres comandes, fem `/pie P3` i obtindrem quelcom com:
 
@@ -139,7 +139,7 @@ Finalment amb `/report` hauriem d'obtenir un resultat similar a:
 Usa `pycodestyle` amb cada fitxer \*.py per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
 
 
-## Author
+## Autor
 
 Joan Francesc Muntaner González
 [joan.francesc.muntaner@est.fib.upc.edu]
