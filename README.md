@@ -62,10 +62,10 @@ També s'ha afegit una pregunta addicional quan s'executa amb un input que sobre
 ### Bot
 
 * Podem tenir moltes enquestes creades pel Compilador, però són totes independents entre elles.
-* Definim l'_enquesta activa_ en un moment de l'execució com l'última enquesta (<idEnquesta>) de la que s'ha fet `/quiz <idEnquesta>`.
-* S'ha incorportat una funcionalitat addicional a `quiz` tal que si es fa `quiz <idEnquesta> 0`, <idEnquesta> passa a ser l'_enquesta activa_.
-* Les comandes `bar`, `pie` i `report` fan referència a l'_enquesta activa_ en el moment d'executar-se.
-* user_data és persistent entre diverses execucions del bot (desde la mateixa màquina) per poder guardar l'estat de l'_enquesta activa_ i començar l'execució del bot podent usar totes les comandes (després de la primera execució).
+* Definim l'__enquesta activa__ en un moment de l'execució com l'última enquesta (<idEnquesta>) de la que s'ha fet `/quiz <idEnquesta>`.
+* S'ha incorportat una funcionalitat addicional a `/quiz` tal que si es fa `/quiz <idEnquesta> 0` (es crida un argument addicional igual a _0_), <idEnquesta> passa a ser l'_enquesta activa_.
+* Les comandes `/bar`, `/pie` i `/report` fan referència a l'_enquesta activa_ en el moment d'executar-se.
+* _user_data_ és persistent entre diverses execucions del bot (desde la mateixa màquina) per poder guardar l'estat de l'_enquesta activa_ i començar l'execució del bot podent usar totes les comandes (després de la primera execució).
 
 ## Running the tests
 
