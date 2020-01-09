@@ -21,7 +21,7 @@ Per executar el compilador simplement executa la següent comanda desde la carpe
 python3 test.main.py el_teu_input.txt
 ```
 
-On _ el\_teu\_input.txt_ és el fitxer d'entrada que conté l'enquesta que es vol interpretar.
+On *el_teu_input.txt* és el fitxer d'entrada que conté l'enquesta que es vol interpretar.
 
 ### Execució Bot
 
