@@ -134,6 +134,10 @@ Finalment amb `/report` hauriem d'obtenir un resultat similar a:
 
 <center><img src='./images_test/report.png' width='300'></center>
 
+### Altres tests del bot.
+
+S'ha inclòs una enquesta (_EnquestaDobleAlt_) que permet provar una enquesta amb dues alternatives seguides. Per generar el graf es pot procedir amb `python3 test.main.py inputDoubleAlternative` i després provar al bot amb `/quiz EnquestaDobleAlt`.
+
 ### Tests d'estil de codi
 
 Usa `pycodestyle` amb cada fitxer \*.py per comprovar que compleixen els estàndards pep8 (tret de la llargada de línia).
